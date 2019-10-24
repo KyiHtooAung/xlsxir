@@ -91,6 +91,16 @@ defmodule Xlsxir do
     result
   end
 
+  def extract_to_map(path, index) do
+    [headers | body]  = Xlsxir.stream_list(path, index)
+                        |> Enum.map(fn row_data -> row_data end)
+    body
+    |> Enum.map(
+        fn row_data ->  Enum.zip(headers, row_data)
+                        |> Map.new()
+        end)
+  end
+
   @doc """
   Stream worksheet rows contained in the specified `.xlsx` file.
 
